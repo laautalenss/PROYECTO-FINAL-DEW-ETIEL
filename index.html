@@ -13,10 +13,12 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Zen+Dots&display=swap" rel="stylesheet">
-
+        
+        <!-- VUE.JS -->
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     </head>
     <body>
-
+        <div id="app">
         <!-- MENU DE NAVEGACIÓN -->
         <nav class="menu">
             <ul class="menu-left">
@@ -72,8 +74,21 @@
                     <div class="slide"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
                   </div>
                 </div>
+            </section><br>
+
+            <!-- SECCION DE LISTA DE PRODUCTOS -->
+            <section id="lista-productos">
+                <h2>Nuestros Productos</h2>
+                <div class="productos-container">
+                    <div class="producto-item" v-for="producto in productos">
+                        <img :src="producto.img" :alt="producto.name">
+                        <h3>{{ producto.name }}</h3>
+                        <p class="precio">{{ producto.precio }}</p>
+                    </div>
+                </div>
             </section>
         </main>
+        </div>
         <script src="script.js"></script>
     </body>
 </html>

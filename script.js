@@ -1,3 +1,24 @@
+// VUE.JS
+const app = Vue.createApp({
+  data() {
+    return {
+      productos: [
+        { name: 'Masajeador de Cuello', precio: '189.99 €', img: 'imgs/imgs_productos/masaje_cuello.png' },
+        { name: 'Masajeador de Espalda', precio: '234.99 €', img: 'imgs/imgs_productos/masaje_espalda.png' },
+        { name: 'Masajeador de Pies', precio: '149.99 €', img: 'imgs/imgs_productos/masaje_pies.png' },
+        { name: 'Pastillas para Dormir', precio: '16.99 €', img: 'imgs/imgs_productos/pastillas_dormir.png' },
+        { name: 'Pistola de Masaje', precio: '89.99 €', img: 'imgs/imgs_productos/pistola.png' },
+        { name: 'Plantillas Ortopédicas', precio: '70.50 €', img: 'imgs/imgs_productos/plantillas_pie.png' },
+        { name: 'Vitaminas Bienestar', precio: '24.99 €', img: 'imgs/imgs_productos/vitaminas_bienestar.png' },
+        { name: 'Vitaminas Diarias', precio: '18.99 €', img: 'imgs/imgs_productos/vitaminas_diarias.png' }
+      ]
+    }
+  }
+})
+
+app.mount('#app')
+
+// CARRUSEL
 const track = document.querySelector(".carousel-track");
 const slides = document.querySelectorAll(".slide");
 
@@ -34,3 +55,4 @@ setInterval(() => {
         }, 500);
     }
 }, DELAY);
+
