@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Soma</title>
+        <link rel="stylesheet" href="style.css" />
+
+        <!-- FUENTE MONTSERRAT -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Zen+Dots&display=swap" rel="stylesheet">
+
+    </head>
+    <body>
+
+        <!-- MENU DE NAVEGACIÓN -->
+        <nav class="menu">
+            <ul class="menu-left">
+                <!-- ICONO DE LA PAGINA -->
+                <li>
+                    <a href="#inicio">
+                        <img
+                            src="imgs/icono.png"
+                            alt="ICONO PAGINA"
+                            class="icono"
+                        />
+                        <span class="logo-texto">
+                            <span>SOMA</span><br>
+                            <span>ESSENTIALS</span>
+                        </span>
+                    </a>
+                </li>
+
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#productos">Productos</a></li>
+                <li><a href="#acercade">Acerca de</a></li>
+            </ul>
+
+            <div class="menu-right">
+                <a href="#carrito" class="right-link"><img src="imgs/carrito.svg" alt="Carrito"><span>Carrito</span></a>
+                <a href="#Idioma" class="right-link"><img src="imgs/idioma.svg" alt="Idioma"><span>Idioma</span></a>
+                <a href="#usuario" class="user-link"><img src="imgs/usuario.svg" alt="Usuario"> Registrarse / Iniciar Sesión</a>
+            </div>
+        </nav><br>
+
+        <main class="contenido">
+
+            <!-- ENCABEZADO -->
+            <h1>Soma Essentials</h1>
+            <p>No dejes que tu espalda o el cansancio decidan por ti. En Soma Essentials te ayudamos a resetear el cuerpo: liberamos tus nudos, enderezamos tu día y recargamos tus pilas. Porque vivir con menos peso se nota desde el primer momento</p><br>
+
+            <!-- SECCION DE PRODUCTOS DESTACADOS -->
+            <section id="productos-destacados">
+                <h2>Productos destacados</h2>
+
+                <!-- CARRUSEL DE PRODUCTOS RECOMENDADOS -->
+                <div class="carousel">
+                  <div class="carousel-track">
+                    <!-- Clon de la última -->
+                    <div class="slide"><img src="imgs/centrum_women.png" alt="Producto 3"></div>
+
+                    <!-- Slides reales -->
+                    <div class="slide"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
+                    <div class="slide"><img src="imgs/sensor_espalda.png" alt="Producto 2"></div>
+                    <div class="slide"><img src="imgs/centrum_women.png" alt="Producto 3"></div>
+
+                    <!-- Clon de la primera -->
+                    <div class="slide"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
+                  </div>
+                </div>
+            </section>
+        </main>
+        <script src="script.js"></script>
+    </body>
+</html>
