@@ -19,8 +19,8 @@ const app = Vue.createApp({
 app.mount('#app')
 
 // CARRUSEL
-const track = document.querySelector(".carousel-track");
-const slides = document.querySelectorAll(".slide");
+const track = document.querySelector(".carrusel-pista");
+const slides = document.querySelectorAll(".diapositiva");
 
 let index = 1; // empezamos en la primera real
 const DELAY = 3000;

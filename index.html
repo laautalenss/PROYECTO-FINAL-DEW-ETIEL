@@ -15,13 +15,13 @@
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Zen+Dots&display=swap" rel="stylesheet">
         
         <!-- VUE.JS -->
-        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+        <script src="https://unpkg.com/vue@3.0.0"></script>
     </head>
     <body>
         <div id="app">
         <!-- MENU DE NAVEGACIÓN -->
         <nav class="menu">
-            <ul class="menu-left">
+            <ul class="menu-izquierda">
                 <!-- ICONO DE LA PAGINA -->
                 <li>
                     <a href="#inicio">
@@ -42,10 +42,10 @@
                 <li><a href="#acercade">Acerca de</a></li>
             </ul>
 
-            <div class="menu-right">
-                <a href="#carrito" class="right-link"><img src="imgs/carrito.svg" alt="Carrito"><span>Carrito</span></a>
-                <a href="#Idioma" class="right-link"><img src="imgs/idioma.svg" alt="Idioma"><span>Idioma</span></a>
-                <a href="#usuario" class="user-link"><img src="imgs/usuario.svg" alt="Usuario"> Registrarse / Iniciar Sesión</a>
+            <div class="menu-derecha">
+                <a href="#carrito" class="enlace-icono"><img src="imgs/carrito.svg" alt="Carrito"><span>Carrito</span></a>
+                <a href="#Idioma" class="enlace-icono"><img src="imgs/idioma.svg" alt="Idioma"><span>Idioma</span></a>
+                <a href="#usuario" class="enlace-usuario"><img src="imgs/usuario.svg" alt="Usuario"> Registrarse / Iniciar Sesión</a>
             </div>
         </nav><br>
 
@@ -60,18 +60,18 @@
                 <h2>Productos destacados</h2>
 
                 <!-- CARRUSEL DE PRODUCTOS RECOMENDADOS -->
-                <div class="carousel">
-                  <div class="carousel-track">
+                <div class="carrusel">
+                  <div class="carrusel-pista">
                     <!-- Clon de la última -->
-                    <div class="slide"><img src="imgs/centrum_women.png" alt="Producto 3"></div>
+                    <div class="diapositiva"><img src="imgs/centrum_women.png" alt="Producto 3"></div>
 
                     <!-- Slides reales -->
-                    <div class="slide"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
-                    <div class="slide"><img src="imgs/sensor_espalda.png" alt="Producto 2"></div>
-                    <div class="slide"><img src="imgs/centrum_women.png" alt="Producto 3"></div>
+                    <div class="diapositiva"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
+                    <div class="diapositiva"><img src="imgs/sensor_espalda.png" alt="Producto 2"></div>
+                    <div class="diapositiva"><img src="imgs/centrum_women.png" alt="Producto 3"></div>
 
                     <!-- Clon de la primera -->
-                    <div class="slide"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
+                    <div class="diapositiva"><img src="imgs/pistola_masaje.jpg" alt="Producto 1"></div>
                   </div>
                 </div>
             </section><br>
@@ -79,8 +79,8 @@
             <!-- SECCION DE LISTA DE PRODUCTOS -->
             <section id="lista-productos">
                 <h2>Nuestros Productos</h2>
-                <div class="productos-container">
-                    <div class="producto-item" v-for="producto in productos">
+                <div class="contenedor-productos">
+                    <div class="producto" v-for="producto in productos">
                         <img :src="producto.img" :alt="producto.name">
                         <h3>{{ producto.name }}</h3>
                         <p class="precio">{{ producto.precio }}</p>
