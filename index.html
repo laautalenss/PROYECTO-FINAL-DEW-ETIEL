@@ -37,19 +37,20 @@
                     </a>
                 </li>
 
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#productos">Productos</a></li>
+                <li><a href="#" @click.prevent="vistaActual = 'tienda'">Inicio</a></li>
+                <li><a href="#" @click.prevent="vistaActual = 'tienda'">Productos</a></li>
                 <li><a href="#acercade">Acerca de</a></li>
             </ul>
 
             <div class="menu-derecha">
-                <a href="#carrito" class="enlace-icono"><img src="imgs/carrito.svg" alt="Carrito"><span>Carrito</span></a>
+                <a href="#" class="enlace-icono" @click.prevent="vistaActual = 'carrito'"><img src="imgs/carrito.svg" alt="Carrito"><span>Carrito ({{ carrito.length }})</span></a>
                 <a href="#Idioma" class="enlace-icono"><img src="imgs/idioma.svg" alt="Idioma"><span>Idioma</span></a>
                 <a href="#usuario" class="enlace-usuario"><img src="imgs/usuario.svg" alt="Usuario"> Registrarse / Iniciar Sesión</a>
             </div>
         </nav><br>
 
-        <main class="contenido">
+        <!-- EL V-IF >> CONDICIONAL PARA QUE LA TIENDA SE VEA SOLO CUANDO TOQUE -->
+        <main class="contenido" v-if="vistaActual === 'tienda'">
 
             <!-- ENCABEZADO -->
             <h1>Soma Essentials</h1>
@@ -84,10 +85,30 @@
                         <img :src="producto.img" :alt="producto.name">
                         <h3>{{ producto.name }}</h3>
                         <p class="precio">{{ producto.precio }}</p>
+                        <button @click="agregarAlCarrito(producto)">Añadir al carrito</button>
                     </div>
                 </div>
             </section>
         </main>
+
+        <section class="seccion-carrito" v-if="vistaActual === 'carrito'">
+            <h2>Tu carrito</h2>
+            <div v-if="carrito.length === 0">
+                <p>Tu carrito está vacío. ¡Añade algo a tu carrito!</p>
+            </div>
+            <div v-else>
+                <ul>
+                    <li v-for="item in carrito">
+                        {{ item.name }} - {{ item.precio }}
+                    </li>
+                </ul>
+            </div>
+            <button @click="vistaActual = 'tienda'">Seguir comprando</button>
+        </section>
+
+        <footer class="soma-footer">
+            <p>&copy; 2026 SOMA ESSENTIALS - Salud y Bienestar</p>
+        </footer>
         </div>
         <script src="script.js"></script>
     </body>

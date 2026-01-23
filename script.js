@@ -11,11 +11,29 @@ const app = Vue.createApp({
         { name: 'Plantillas Ortopédicas', precio: '70.50 €', img: 'imgs/imgs_productos/plantillas_pie.png' },
         { name: 'Vitaminas Bienestar', precio: '24.99 €', img: 'imgs/imgs_productos/vitaminas_bienestar.png' },
         { name: 'Vitaminas Diarias', precio: '18.99 €', img: 'imgs/imgs_productos/vitaminas_diarias.png' }
-      ]
+      ],
+
+      carrito: [], 
+
+      vistaActual: 'tienda'
+    }
+  },
+  methods: {
+
+    //FUNCION PARA AGREGAR PRODUCTOS AL CARRITO
+    agregarAlCarrito(producto) {
+      //PUSH PARA AÑADIR EL OBJETO A LA ARRAY DE CARRITO:
+      this.carrito.push(producto);
+      localStorage.setItem('carritoSoma', JSON.stringify(this.carrito));
+      console.log("Carrito actual:", this.carrito);
+    },
+
+    //FUNCION PARA NAVEGAR
+    cambiarVista(nuevaVista) {
+      this.vistaActual = nuevaVista;
     }
   }
 })
-
 app.mount('#app')
 
 // CARRUSEL
