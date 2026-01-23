@@ -28,7 +28,7 @@ INSERT INTO productos (nombre, descripcion, precio, disponibilidad, imagen) VALU
 ('Masajeador de Espalda', 'Alivia el dolor de espalda con masaje profundo', 42.99, 20, 'imgs/imgs_productos/masaje_espalda.png'),
 ('Masajeador de Pies', 'Relajación completa para tus pies cansados', 29.99, 12, 'imgs/imgs_productos/masaje_pies.png'),
 ('Pastillas para Dormir', 'Complemento natural para un sueño reparador', 16.99, 30, 'imgs/imgs_productos/pastillas_dormir.png'),
-('Pistola de Masaje', 'Terapia muscular profesional en casa', 89.99, 8, 'imgs/imgs_productos/pistola_masaje.png'),
+('Pistola de Masaje', 'Terapia muscular profesional en casa', 89.99, 8, 'imgs/imgs_productos/pistola.png'),
 ('Plantillas Ortopédicas', 'Soporte y comodidad para tus pies', 22.99, 25, 'imgs/imgs_productos/plantillas_pie.png'),
 ('Vitaminas Bienestar', 'Complemento vitamínico para tu bienestar diario', 24.99, 40, 'imgs/imgs_productos/vitaminas_bienestar.png'),
 ('Vitaminas Diarias', 'Multivitamínico completo para toda la familia', 18.99, 35, 'imgs/imgs_productos/vitaminas_diarias.png');
