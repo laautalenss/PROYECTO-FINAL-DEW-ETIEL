@@ -11,14 +11,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Zen+Dots&display=swap"
-      rel="stylesheet"
-    />
+      rel="stylesheet" />
 
     <!-- VUE.JS -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
@@ -33,7 +31,8 @@
             <a href="#inicio">
               <img src="imgs/icono.png" alt="ICONO PAGINA" class="icono" />
               <span class="logo-texto">
-                <span>SOMA</span><br />
+                <span>SOMA</span>
+                <br />
                 <span>ESSENTIALS</span>
               </span>
             </a>
@@ -43,47 +42,40 @@
             <a href="#" @click.prevent="vistaActual = 'tienda'">Inicio</a>
           </li>
           <li>
-            <a href="#" @click.prevent="vistaActual = 'tienda'">Productos</a>
+            <a href="#" @click.prevent="vistaActual = 'productos'">Productos</a>
           </li>
-          <li><a href="#acercade">Acerca de</a></li>
+          <li><a href="#" @click.prevent="vistaActual = 'acercade'">Acerca de</a></li>
         </ul>
 
         <div class="menu-derecha">
-          <a
-            href="#"
-            class="enlace-icono"
-            @click.prevent="vistaActual = 'carrito'"
-            ><img src="imgs/carrito.svg" alt="Carrito" /><span
-              >Carrito ({{ carrito.length }})</span
-            ></a
-          >
-          <a href="#Idioma" class="enlace-icono"
-            ><img src="imgs/idioma.svg" alt="Idioma" /><span>Idioma</span></a
-          >
+          <a href="#" class="enlace-icono" @click.prevent="vistaActual = 'carrito'">
+            <img src="imgs/carrito.svg" alt="Carrito" />
+            <span>Carrito ({{ carrito.length }})</span>
+          </a>
+          <a href="#Idioma" class="enlace-icono">
+            <img src="imgs/idioma.svg" alt="Idioma" />
+            <span>Idioma</span>
+          </a>
           <a
             href="#"
             class="enlace-usuario"
-            @click.prevent="vistaActual = usuarioLogueado ? 'perfil' : 'registro'"
-          >
+            @click.prevent="vistaActual = usuarioYaRegistrado ? 'perfil' : 'registro'">
             <img src="imgs/usuario.svg" alt="Usuario" />
-            <span v-if="usuarioLogueado"
-              >Bienvenido, {{ usuarioLogueado.nombre }}</span
-            >
+            <span v-if="usuarioYaRegistrado">Bienvenido, {{ usuarioYaRegistrado.nombre }}</span>
             <span v-else>Registrarse / Iniciar Sesión</span>
           </a>
         </div>
       </nav>
       <br />
 
-      <!-- EL V-IF >> CONDICIONAL PARA QUE LA TIENDA SE VEA SOLO CUANDO TOQUE -->
+      <!-- EL V-IF >> CONDICIONAL PARA QUE LA VISTA SE VEA SOLO CUANDO HAGAS CLIC -->
       <main class="contenido" v-if="vistaActual === 'tienda'">
         <!-- ENCABEZADO -->
         <h1>Soma Essentials</h1>
         <p>
-          No dejes que tu espalda o el cansancio decidan por ti. En Soma
-          Essentials te ayudamos a resetear el cuerpo: liberamos tus nudos,
-          enderezamos tu día y recargamos tus pilas. Porque vivir con menos peso
-          se nota desde el primer momento
+          No dejes que tu espalda o el cansancio decidan por ti. En Soma Essentials te ayudamos a
+          resetear el cuerpo: liberamos tus nudos, enderezamos tu día y recargamos tus pilas. Porque
+          vivir con menos peso se nota desde el primer momento
         </p>
         <br />
 
@@ -127,9 +119,7 @@
               <img :src="producto.imagen" :alt="producto.nombre" />
               <h3>{{ producto.nombre }}</h3>
               <p class="precio">{{ producto.precio }} €</p>
-              <button @click="agregarAlCarrito(producto)">
-                Añadir al carrito
-              </button>
+              <button class="botonAñadirAlCarrito" @click="agregarAlCarrito(producto)">Añadir al carrito</button>
             </div>
           </div>
         </section>
@@ -143,9 +133,7 @@
         </div>
         <div v-else>
           <ul>
-            <li v-for="item in carrito">
-              {{ item.nombre }} - {{ item.precio }}
-            </li>
+            <li v-for="item in carrito">{{ item.nombre }} - {{ item.precio }}</li>
           </ul>
           <div class="total-compra">
             <hr />
@@ -160,36 +148,15 @@
       <section v-if="vistaActual === 'registro'" class="seccion-registro">
         <h2>Registrarse</h2>
         <div class="formulario">
-          <input
-            type="text"
-            v-model="usuarioNuevo.nombre"
-            placeholder="Nombre completo"
-          />
-          <input
-            type="text"
-            v-model="usuarioNuevo.id"
-            placeholder="ID (5 números)"
-          />
-          <input
-            type="email"
-            v-model="usuarioNuevo.email"
-            placeholder="Correo electrónico"
-          />
-          <input
-            type="text"
-            v-model="usuarioNuevo.telefono"
-            placeholder="Teléfono (9 dígitos)"
-          />
-          <input
-            type="text"
-            v-model="usuarioNuevo.cuenta"
-            placeholder="Cuenta Bancaria"
-          />
+          <input type="text" v-model="usuarioNuevo.nombre" placeholder="Nombre completo" />
+          <input type="text" v-model="usuarioNuevo.id" placeholder="ID (5 números)" />
+          <input type="email" v-model="usuarioNuevo.email" placeholder="Correo electrónico" />
+          <input type="text" v-model="usuarioNuevo.telefono" placeholder="Teléfono (9 dígitos)" />
+          <input type="text" v-model="usuarioNuevo.cuenta" placeholder="Cuenta Bancaria" />
 
           <button
             @click="validarRegistro"
-            :class="{ 'btn-activo': usuarioNuevo.nombre.length > 0, 'btn-desactivado': usuarioNuevo.nombre.length === 0 }"
-          >
+            :class="{ 'btn-activo': usuarioNuevo.nombre.length > 0, 'btn-desactivado': usuarioNuevo.nombre.length === 0 }">
             Registrarse
           </button>
         </div>
@@ -200,14 +167,55 @@
       <section v-if="vistaActual === 'perfil'" class="seccion-perfil">
         <h2>Tu Perfil de Usuario</h2>
         <div class="tarjeta-perfil">
-          <p><strong>Nombre:</strong> {{ usuarioLogueado.nombre }}</p>
-          <p><strong>ID:</strong> {{ usuarioLogueado.id }}</p>
-          <p><strong>Email:</strong> {{ usuarioLogueado.email }}</p>
-          <p><strong>Teléfono:</strong> {{ usuarioLogueado.telefono }}</p>
+          <p>
+            <strong>Nombre:</strong>
+            {{ usuarioYaRegistrado.nombre }}
+          </p>
+          <p>
+            <strong>ID:</strong>
+            {{ usuarioYaRegistrado.id }}
+          </p>
+          <p>
+            <strong>Email:</strong>
+            {{ usuarioYaRegistrado.email }}
+          </p>
+          <p>
+            <strong>Teléfono:</strong>
+            {{ usuarioYaRegistrado.telefono }}
+          </p>
         </div>
         <br />
         <button @click="cerrarSesion" class="btn-salir">Cerrar Sesión</button>
         <button @click="vistaActual = 'tienda'">Volver a la tienda</button>
+      </section>
+
+      <!-- SECCION ACERCA DE -->
+      <section v-if="vistaActual === 'acercade'" class="seccion-acercade">
+        <h2>ACERCA DE NOSOTROS</h2>
+        <p>
+          En SOMA creemos que el bienestar no tiene por qué ser complicado. Nacimos con la idea de
+          que cuidar tu cuerpo y tu mente debe ser algo natural y accesible, sin términos extraños
+          ni rutinas imposibles. Simplemente, estamos aquí para ayudarte a sentirte mejor cada día.
+          Nos dedicamos a elegir productos que realmente marcan la diferencia en tu rutina. Desde
+          vitaminas que te dan ese empujón extra hasta masajeadores diseñados para liberar el estrés
+          acumulado, cada artículo en nuestra tienda ha sido seleccionado pensando en tu descanso y
+          tu energía. No somos solo una tienda de salud; queremos ser tu aliado de confianza. En
+          SOMA, nuestro compromiso es ofrecerte soluciones prácticas y honestas para que alcances tu
+          mejor versión, siempre a tu ritmo y sin complicaciones.
+        </p>
+      </section>
+
+      <!-- SECCION PRODUCTOS -->
+      <section v-if="vistaActual === 'productos'" class="seccion-productos">
+        <h2>PRODUCTOS</h2>
+        <div class="contenedor-productos">
+          <div class="producto" v-for="producto in productos">
+            <img :src="producto.imagen" :alt="producto.nombre" />
+            <h3>{{ producto.nombre }}</h3>
+            <p class="precio">{{ producto.precio }} €</p>
+            <button class="botonAñadirAlCarrito" @click="agregarAlCarrito(producto)">Añadir al carrito</button>
+          </div>
+        </div>
       </section>
 
       <!-- FOOTER -->

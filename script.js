@@ -7,7 +7,7 @@ const app = Vue.createApp({
       carrito: [],
       vistaActual: "tienda",
 
-      //aqui se guarda lo que escribe el usuario
+      //aqui se guarda desde el formulario de registrarse
       usuarioNuevo: {
         nombre: "",
         id: "",
@@ -17,7 +17,7 @@ const app = Vue.createApp({
       },
 
       //usuario ya registrado/logueado
-      usuarioLogueado: null,
+      usuarioYaRegistrado: null,
     };
   },
 
@@ -28,10 +28,10 @@ const app = Vue.createApp({
     //RECUPERAR USUARIO SI EXISTE
     const usuarioGuardado = sessionStorage.getItem("usuarioSoma");
     if (usuarioGuardado) {
-      this.usuarioLogueado = JSON.parse(usuarioGuardado);
+      this.usuarioYaRegistrado = JSON.parse(usuarioGuardado);
       this.vistaActual = "tienda";
 
-      console.log("Bienvenido de nuevo ", this.usuarioLogueado.nombre);
+      console.log("Bienvenido de nuevo ", this.usuarioYaRegistrado.nombre);
     }
   },
 
@@ -57,9 +57,7 @@ const app = Vue.createApp({
     //FUNCION PARA CONFIRMAR PEDIDO
     confirmarPedido() {
       if (this.carrito.length > 0) {
-        alert(
-          "¡Gracias por tu compra! El total es: " + this.totalCarrito + "€",
-        );
+        alert("¡Gracias por tu compra! El total es: " + this.totalCarrito + "€");
         this.carrito = [];
         localStorage.removeItem("carritoSoma");
         this.vistaActual = "tienda"; //volver a la tienda
@@ -81,9 +79,7 @@ const app = Vue.createApp({
       if (!regexID.test(this.usuarioNuevo.id)) {
         alert("Error: El ID debe tener 5 números.");
       } else if (!regexTel.test(this.usuarioNuevo.telefono)) {
-        alert(
-          "Error: El teléfono debe tener 9 dígitos y empezar por 6, 7 o 9.",
-        );
+        alert("Error: El teléfono debe tener 9 dígitos y empezar por 6, 7 o 9.");
       } else if (!regexEmail.test(this.usuarioNuevo.email)) {
         alert("Error: El correo electrónico no es válido.");
       } else {
@@ -98,13 +94,10 @@ const app = Vue.createApp({
             alert("¡Registro completado y guardado en la base de datos!");
 
             //GUARDAR EN SESSIONSTORAGE Y LOGUEAR AL USUARIO
-            sessionStorage.setItem(
-              "usuarioSoma",
-              JSON.stringify(this.usuarioNuevo),
-            );
+            sessionStorage.setItem("usuarioSoma", JSON.stringify(this.usuarioNuevo));
 
             //COPIAR DATOS A USUARIO LOGUEADO
-            this.usuarioLogueado = { ...this.usuarioNuevo };
+            this.usuarioYaRegistrado = { ...this.usuarioNuevo };
 
             //LIMPIAR FORMULARIO
             this.usuarioNuevo = {
@@ -125,7 +118,7 @@ const app = Vue.createApp({
     },
     //FUNCION PARA CERRAR SESION
     cerrarSesion() {
-      this.usuarioLogueado = null;
+      this.usuarioYaRegistrado = null;
       sessionStorage.removeItem("usuarioSoma");
       this.vistaActual = "tienda";
       alert("Sesión cerrada");
