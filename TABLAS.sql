@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS tienda CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE tienda_soma;
+USE tienda;
 
 -- TABLA PRODUCTOS
 CREATE TABLE productos (

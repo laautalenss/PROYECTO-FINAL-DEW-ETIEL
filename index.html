@@ -39,22 +39,33 @@
           </li>
 
           <li>
-            <a href="#" @click.prevent="vistaActual = 'tienda'">Inicio</a>
+            <a href="#" @click.prevent="vistaActual = 'tienda'" data-traduccion="menu-inicio">
+              Inicio
+            </a>
           </li>
           <li>
-            <a href="#" @click.prevent="vistaActual = 'productos'">Productos</a>
+            <a href="#" @click.prevent="vistaActual = 'productos'" data-traduccion="menu-productos">
+              Productos
+            </a>
           </li>
-          <li><a href="#" @click.prevent="vistaActual = 'acercade'">Acerca de</a></li>
+          <li>
+            <a href="#" @click.prevent="vistaActual = 'acercade'" data-traduccion="menu-acercade">
+              Acerca de
+            </a>
+          </li>
         </ul>
 
         <div class="menu-derecha">
           <a href="#" class="enlace-icono" @click.prevent="vistaActual = 'carrito'">
             <img src="imgs/carrito.svg" alt="Carrito" />
-            <span>Carrito ({{ carrito.length }})</span>
+            <span>
+              <span data-traduccion="carrito">Carrito</span>
+              ({{ carrito.length }})
+            </span>
           </a>
-          <a href="#Idioma" class="enlace-icono">
+          <a href="#" class="enlace-icono" onclick="cambiarIdioma()">
             <img src="imgs/idioma.svg" alt="Idioma" />
-            <span>Idioma</span>
+            <span data-traduccion="texto-idioma">Idioma</span>
           </a>
           <a
             href="#"
@@ -70,41 +81,52 @@
 
       <!-- EL V-IF >> CONDICIONAL PARA QUE LA VISTA SE VEA SOLO CUANDO HAGAS CLIC -->
       <main class="contenido" v-if="vistaActual === 'tienda'">
-        <!-- ENCABEZADO -->
-        <h1>Soma Essentials</h1>
-        <p>
-          No dejes que tu espalda o el cansancio decidan por ti. En Soma Essentials te ayudamos a
-          resetear el cuerpo: liberamos tus nudos, enderezamos tu día y recargamos tus pilas. Porque
-          vivir con menos peso se nota desde el primer momento
-        </p>
-        <br />
+        <!-- HERO SECTION -->
+        <section class="hero-section">
+          <div class="hero-content">
+            <span class="hero-badge">TU BIENESTAR, NUESTRA PRIORIDAD</span>
+            <h1 class="hero-title">Soma Essentials</h1>
+            <p class="hero-subtitle">
+              No dejes que tu espalda o el cansancio decidan por ti. En Soma Essentials te ayudamos a
+              resetear el cuerpo: liberamos tus nudos, enderezamos tu día y recargamos tus pilas.
+            </p>
+            <div class="hero-buttons">
+              <button @click="vistaActual = 'productos'" class="btn-hero-primary">
+                Explorar Productos
+              </button>
+              <button @click="vistaActual = 'acercade'" class="btn-hero-secondary">
+                Conocer Más
+              </button>
+            </div>
+          </div>
+        </section>
 
         <!-- SECCION DE PRODUCTOS DESTACADOS -->
         <section id="productos-destacados">
-          <h2>Productos destacados</h2>
+          <h2 data-traduccion="productos-destacados">Productos destacados</h2>
 
           <!-- CARRUSEL DE PRODUCTOS RECOMENDADOS -->
           <div class="carrusel">
             <div class="carrusel-pista">
               <!-- Clon de la última -->
               <div class="diapositiva">
-                <img src="imgs/centrum_women.png" alt="Producto 3" />
+                <img src="imgs/centrum_women.png" alt="Producto 3" @click="verDetallesProducto(25)" style="cursor: pointer;" />
               </div>
 
-              <!-- Slides reales -->
+              <!-- Slides reales (CLICABLES) -->
               <div class="diapositiva">
-                <img src="imgs/pistola_masaje.jpg" alt="Producto 1" />
+                <img src="imgs/pistola_masaje.jpg" alt="Producto 1" @click="verDetallesProducto(23)" style="cursor: pointer;" />
               </div>
               <div class="diapositiva">
-                <img src="imgs/sensor_espalda.png" alt="Producto 2" />
+                <img src="imgs/sensor_espalda.png" alt="Producto 2" @click="verDetallesProducto(24)" style="cursor: pointer;" />
               </div>
               <div class="diapositiva">
-                <img src="imgs/centrum_women.png" alt="Producto 3" />
+                <img src="imgs/centrum_women.png" alt="Producto 3" @click="verDetallesProducto(25)" style="cursor: pointer;" />
               </div>
 
               <!-- Clon de la primera -->
               <div class="diapositiva">
-                <img src="imgs/pistola_masaje.jpg" alt="Producto 1" />
+                <img src="imgs/pistola_masaje.jpg" alt="Producto 1" @click="verDetallesProducto(23)" style="cursor: pointer;" />
               </div>
             </div>
           </div>
@@ -113,13 +135,22 @@
 
         <!-- SECCION DE LISTA DE PRODUCTOS -->
         <section id="lista-productos">
-          <h2>Nuestros Productos</h2>
+          <h2 data-traduccion="nuestros-productos">Nuestros Productos</h2>
           <div class="contenedor-productos">
             <div class="producto" v-for="producto in productos">
-              <img :src="producto.imagen" :alt="producto.nombre" />
+              <!-- IMAGEN CLICABLE PARA VER DETALLES -->
+              <img :src="producto.imagen" :alt="producto.nombre" @click="verDetallesProducto(producto.id)" style="cursor: pointer;" />
               <h3>{{ producto.nombre }}</h3>
               <p class="precio">{{ producto.precio }} €</p>
-              <button class="botonAñadirAlCarrito" @click="agregarAlCarrito(producto)">Añadir al carrito</button>
+              <button
+                class="botonAñadirAlCarrito"
+                @click="agregarAlCarrito(producto)"
+                :disabled="producto.disponibilidad <= 0"
+                :class="{ 'btn-sin-stock': producto.disponibilidad <= 0 }"
+                data-traduccion="btn-agregar">
+                <span v-if="producto.disponibilidad > 0">Añadir al carrito</span>
+                <span v-else data-traduccion="sin-stock">Sin stock</span>
+              </button>
             </div>
           </div>
         </section>
@@ -127,48 +158,148 @@
 
       <!-- SECCION DE CARRITO -->
       <section class="seccion-carrito" v-if="vistaActual === 'carrito'">
-        <h2>Tu carrito</h2>
+        <h2 data-traduccion="titulo-carrito">Tu carrito</h2>
         <div v-if="carrito.length === 0">
-          <p>Tu carrito está vacío. ¡Añade algo a tu carrito!</p>
+          <p data-traduccion="carrito-vacio">¡Tu carrito está vacío. Añade algo a tu carrito!</p>
         </div>
         <div v-else>
           <ul>
-            <li v-for="item in carrito">{{ item.nombre }} - {{ item.precio }}</li>
+            <li v-for="(item, index) in carrito" :key="index">
+              <span>{{ item.nombre }} - {{ item.precio }} €</span>
+              <button @click="eliminarDelCarrito(index)" class="btn-eliminar">
+                <img src="imgs/trash.svg" alt="Eliminar" />
+                <span data-traduccion="btn-eliminar">Eliminar</span>
+              </button>
+            </li>
           </ul>
           <div class="total-compra">
             <hr />
-            <h3>Total: {{ totalCarrito }} €</h3>
-            <button @click="confirmarPedido">Confirmar Pedido</button>
+            <h3><span data-traduccion="total">Total</span>: {{ totalCarrito }} €</h3>
+            <button @click="confirmarPedido" data-traduccion="btn-confirmar">Confirmar Pedido</button>
           </div>
         </div>
-        <button @click="vistaActual = 'tienda'">Seguir comprando</button>
+        <button @click="vistaActual = 'tienda'" data-traduccion="btn-seguir-comprando">Seguir comprando</button>
       </section>
 
-      <!-- SECCION DE REGISTRO -->
+      <!-- SECCION DE REGISTRO Y LOGIN -->
       <section v-if="vistaActual === 'registro'" class="seccion-registro">
-        <h2>Registrarse</h2>
-        <div class="formulario">
-          <input type="text" v-model="usuarioNuevo.nombre" placeholder="Nombre completo" />
-          <input type="text" v-model="usuarioNuevo.id" placeholder="ID (5 números)" />
-          <input type="email" v-model="usuarioNuevo.email" placeholder="Correo electrónico" />
-          <input type="text" v-model="usuarioNuevo.telefono" placeholder="Teléfono (9 dígitos)" />
-          <input type="text" v-model="usuarioNuevo.cuenta" placeholder="Cuenta Bancaria" />
+        <!-- BOTONES PARA CAMBIAR ENTRE LOGIN Y REGISTRO -->
+        <div class="tabs-auth">
+          <button 
+            @click="modoAutenticacion = 'login'" 
+            :class="{ 'tab-activo': modoAutenticacion === 'login' }">
+            <span data-traduccion="tab-login">Iniciar Sesión</span>
+          </button>
+          <button 
+            @click="modoAutenticacion = 'registro'" 
+            :class="{ 'tab-activo': modoAutenticacion === 'registro' }">
+            <span data-traduccion="tab-registro">Registrarse</span>
+          </button>
+        </div>
+
+        <!-- FORMULARIO DE LOGIN -->
+        <div v-if="modoAutenticacion === 'login'" class="formulario formulario-login">
+          <h2 data-traduccion="titulo-login">Iniciar Sesión</h2>
+          
+          <!-- ID USUARIO -->
+          <div class="campo-formulario">
+            <input 
+              type="text" 
+              v-model="usuarioLogin.id" 
+              placeholder="ID de usuario (5 números)" />
+          </div>
+
+          <!-- EMAIL -->
+          <div class="campo-formulario">
+            <input 
+              type="email" 
+              v-model="usuarioLogin.email" 
+              placeholder="Correo electrónico" />
+          </div>
+
+          <button
+            @click="iniciarSesion"
+            :class="{ 'btn-activo': usuarioLogin.id.length > 0 && usuarioLogin.email.length > 0, 'btn-desactivado': usuarioLogin.id.length === 0 || usuarioLogin.email.length === 0 }"
+            data-traduccion="btn-iniciar-sesion">
+            Iniciar Sesión
+          </button>
+        </div>
+
+        <!-- FORMULARIO DE REGISTRO -->
+        <div v-if="modoAutenticacion === 'registro'" class="formulario">
+          <h2 data-traduccion="titulo-registro" style="grid-column: 1 / -1; margin-bottom: 0;">Registrarse</h2>
+          
+          <!-- NOMBRE -->
+          <div class="campo-formulario">
+            <input 
+              type="text" 
+              v-model="usuarioNuevo.nombre" 
+              @input="validarCampo('nombre')"
+              :class="{ 'input-error': errores.nombre }"
+              placeholder="Nombre completo" />
+            <span class="mensaje-error" v-if="errores.nombre">{{ errores.nombre }}</span>
+          </div>
+
+          <!-- ID -->
+          <div class="campo-formulario">
+            <input 
+              type="text" 
+              v-model="usuarioNuevo.id" 
+              @input="validarCampo('id')"
+              :class="{ 'input-error': errores.id }"
+              placeholder="ID (5 números)" />
+            <span class="mensaje-error" v-if="errores.id">{{ errores.id }}</span>
+          </div>
+
+          <!-- EMAIL -->
+          <div class="campo-formulario">
+            <input 
+              type="email" 
+              v-model="usuarioNuevo.email" 
+              @input="validarCampo('email')"
+              :class="{ 'input-error': errores.email }"
+              placeholder="Correo electrónico" />
+            <span class="mensaje-error" v-if="errores.email">{{ errores.email }}</span>
+          </div>
+
+          <!-- TELEFONO -->
+          <div class="campo-formulario">
+            <input 
+              type="text" 
+              v-model="usuarioNuevo.telefono" 
+              @input="validarCampo('telefono')"
+              :class="{ 'input-error': errores.telefono }"
+              placeholder="Teléfono (9 dígitos)" />
+            <span class="mensaje-error" v-if="errores.telefono">{{ errores.telefono }}</span>
+          </div>
+
+          <!-- CUENTA BANCARIA -->
+          <div class="campo-formulario">
+            <input 
+              type="text" 
+              v-model="usuarioNuevo.cuenta" 
+              @input="validarCampo('cuenta')"
+              :class="{ 'input-error': errores.cuenta }"
+              placeholder="Cuenta Bancaria (IBAN)" />
+            <span class="mensaje-error" v-if="errores.cuenta">{{ errores.cuenta }}</span>
+          </div>
 
           <button
             @click="validarRegistro"
-            :class="{ 'btn-activo': usuarioNuevo.nombre.length > 0, 'btn-desactivado': usuarioNuevo.nombre.length === 0 }">
+            :class="{ 'btn-activo': usuarioNuevo.nombre.length > 0, 'btn-desactivado': usuarioNuevo.nombre.length === 0 }"
+            data-traduccion="btn-registrarse">
             Registrarse
           </button>
         </div>
-        <button @click="vistaActual = 'tienda'">Volver a la tienda</button>
+        <button @click="vistaActual = 'tienda'" data-traduccion="btn-volver-tienda">Volver a la tienda</button>
       </section>
 
       <!-- SECCION DE PERFIL -->
       <section v-if="vistaActual === 'perfil'" class="seccion-perfil">
-        <h2>Tu Perfil de Usuario</h2>
+        <h2 data-traduccion="titulo-perfil">Tu Perfil de Usuario</h2>
         <div class="tarjeta-perfil">
           <p>
-            <strong>Nombre:</strong>
+            <strong data-traduccion="campo-nombre">Nombre:</strong>
             {{ usuarioYaRegistrado.nombre }}
           </p>
           <p>
@@ -176,23 +307,23 @@
             {{ usuarioYaRegistrado.id }}
           </p>
           <p>
-            <strong>Email:</strong>
+            <strong data-traduccion="campo-email">Email:</strong>
             {{ usuarioYaRegistrado.email }}
           </p>
           <p>
-            <strong>Teléfono:</strong>
+            <strong data-traduccion="campo-telefono">Teléfono:</strong>
             {{ usuarioYaRegistrado.telefono }}
           </p>
         </div>
         <br />
-        <button @click="cerrarSesion" class="btn-salir">Cerrar Sesión</button>
-        <button @click="vistaActual = 'tienda'">Volver a la tienda</button>
+        <button @click="cerrarSesion" class="btn-salir" data-traduccion="btn-cerrar-sesion">Cerrar Sesión</button>
+        <button @click="vistaActual = 'tienda'" data-traduccion="btn-volver-tienda">Volver a la tienda</button>
       </section>
 
       <!-- SECCION ACERCA DE -->
       <section v-if="vistaActual === 'acercade'" class="seccion-acercade">
-        <h2>ACERCA DE NOSOTROS</h2>
-        <p>
+        <h2 data-traduccion="titulo-acercade">ACERCA DE NOSOTROS</h2>
+        <p data-traduccion="texto-acercade">
           En SOMA creemos que el bienestar no tiene por qué ser complicado. Nacimos con la idea de
           que cuidar tu cuerpo y tu mente debe ser algo natural y accesible, sin términos extraños
           ni rutinas imposibles. Simplemente, estamos aquí para ayudarte a sentirte mejor cada día.
@@ -203,6 +334,27 @@
           SOMA, nuestro compromiso es ofrecerte soluciones prácticas y honestas para que alcances tu
           mejor versión, siempre a tu ritmo y sin complicaciones.
         </p>
+
+        <!-- GRID DE VALORES -->
+        <div class="grid-valores">
+          <div class="card-valor">
+            <img src="imgs/premium.svg" alt="Premium" class="icono-valor" />
+            <h3 data-traduccion="valor1-titulo">Calidad Premium</h3>
+            <p data-traduccion="valor1-texto">Productos seleccionados cuidadosamente para garantizar los mejores resultados</p>
+          </div>
+
+          <div class="card-valor">
+            <img src="imgs/heart.svg" alt="Heart" class="icono-valor" />
+            <h3 data-traduccion="valor2-titulo">Bienestar Natural</h3>
+            <p data-traduccion="valor2-texto">Soluciones naturales y efectivas para tu cuerpo y mente sin complicaciones</p>
+          </div>
+
+          <div class="card-valor">
+            <img src="imgs/trust.svg" alt="Trust" class="icono-valor" />
+            <h3 data-traduccion="valor3-titulo">Confianza Total</h3>
+            <p data-traduccion="valor3-texto">Tu aliado de confianza en el camino hacia tu mejor versión personal</p>
+          </div>
+        </div>
       </section>
 
       <!-- SECCION PRODUCTOS -->
@@ -210,10 +362,64 @@
         <h2>PRODUCTOS</h2>
         <div class="contenedor-productos">
           <div class="producto" v-for="producto in productos">
-            <img :src="producto.imagen" :alt="producto.nombre" />
+            <img :src="producto.imagen" :alt="producto.nombre" @click="verDetallesProducto(producto.id)" style="cursor: pointer;" />
             <h3>{{ producto.nombre }}</h3>
             <p class="precio">{{ producto.precio }} €</p>
-            <button class="botonAñadirAlCarrito" @click="agregarAlCarrito(producto)">Añadir al carrito</button>
+            <button 
+              class="botonAñadirAlCarrito" 
+              @click="agregarAlCarrito(producto)"
+              :disabled="producto.disponibilidad <= 0"
+              :class="{ 'btn-sin-stock': producto.disponibilidad <= 0 }">
+              <span v-if="producto.disponibilidad > 0" data-traduccion="btn-agregar">Añadir al carrito</span>
+              <span v-else data-traduccion="sin-stock">Sin stock</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCION DETALLE DE PRODUCTO -->
+      <section v-if="vistaActual === 'detalle-producto' && productoSeleccionado" class="seccion-detalle">
+        <div class="detalle-producto">
+          <!-- IMAGEN GRANDE DEL PRODUCTO -->
+          <div class="detalle-imagen">
+            <img :src="productoSeleccionado.imagen" :alt="productoSeleccionado.nombre" />
+          </div>
+
+          <!-- INFORMACIÓN DEL PRODUCTO -->
+          <div class="detalle-info">
+            <h2>{{ productoSeleccionado.nombre }}</h2>
+            <p class="precio-grande">{{ productoSeleccionado.precio }} €</p>
+            
+            <!-- DESCRIPCIÓN -->
+            <p class="descripcion" v-if="productoSeleccionado.descripcion">
+              {{ productoSeleccionado.descripcion }}
+            </p>
+            <p class="descripcion" v-else>
+              No hay descripcion sobre este producto.
+            </p>
+
+            <!-- DISPONIBILIDAD -->
+            <p class="disponibilidad" v-if="productoSeleccionado.disponibilidad > 0">
+              En stock: {{ productoSeleccionado.disponibilidad }} unidades disponibles
+            </p>
+            <p class="disponibilidad sin-stock" v-else>
+              Producto agotado
+            </p>
+
+            <!-- BOTONES -->
+            <div class="detalle-botones">
+              <button 
+                class="botonAñadirAlCarrito" 
+                @click="agregarAlCarrito(productoSeleccionado)"
+                :disabled="productoSeleccionado.disponibilidad <= 0"
+                :class="{ 'btn-sin-stock': productoSeleccionado.disponibilidad <= 0 }">
+                <span v-if="productoSeleccionado.disponibilidad > 0" data-traduccion="btn-agregar">Añadir al carrito</span>
+                <span v-else data-traduccion="sin-stock">Sin stock</span>
+              </button>
+              <button @click="vistaActual = 'tienda'" class="btn-volver">
+                Volver a la tienda
+              </button>
+            </div>
           </div>
         </div>
       </section>

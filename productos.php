@@ -10,7 +10,9 @@ while ($fila = $resultado->fetch_assoc()) {
         "id" => $fila['id_producto'],
         "nombre" => $fila['nombre'],
         "precio" => (float)$fila['precio'],
-        "imagen" => $fila['imagen']
+        "imagen" => $fila['imagen'],
+        "descripcion" => $fila['descripcion'],
+        "disponibilidad" => (int)$fila['disponibilidad']
     ];
 }
 
