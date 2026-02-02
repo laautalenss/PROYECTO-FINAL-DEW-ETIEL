@@ -31,4 +31,7 @@ INSERT INTO productos (nombre, descripcion, precio, disponibilidad, imagen) VALU
 ('Pistola de Masaje', 'Terapia muscular profesional en casa', 100, 8, 'imgs/imgs_productos/pistola.png'),
 ('Plantillas Ortopédicas', 'Plantillas con soporte y comodidad para tus pies', 49.99, 25, 'imgs/imgs_productos/plantillas_pie.png'),
 ('Vitaminas Bienestar', 'Vitaminas para tu bienestar diario', 16.99, 40, 'imgs/imgs_productos/vitaminas_bienestar.png'),
-('Vitaminas Diarias', 'Vitaminas diarias para una mejor salud', 18.99, 35, 'imgs/imgs_productos/vitaminas_diarias.png');
+('Vitaminas Diarias', 'Vitaminas diarias para una mejor salud', 18.99, 35, 'imgs/imgs_productos/vitaminas_diarias.png'),
+('Pistola de Masaje Profesional', 'Pistola de masaje muscular de alta potencia para recuperación deportiva', 149.99, 10, 'imgs/pistola_masaje.jpg'),
+('Sensor Corrector de Postura', 'Sensor inteligente para corregir tu postura y aliviar dolores de espalda', 79.99, 18, 'imgs/sensor_espalda.png'),
+('Centrum Women Multivitamínico', 'Multivitamínico completo diseñado especialmente para mujeres', 24.99, 50, 'imgs/centrum_women.png');

@@ -1,16 +1,16 @@
-// VUE.JS
+// INICIALIZACIÓN DE VUE
 const app = Vue.createApp({
   data() {
     return {
-      //aqui se guarda desde productos.php
+      // DATOS DE LOS PRODUCTOS CARGADOS DESDE LA BASE DE DATOS
       productos: [],
       carrito: [],
       vistaActual: "tienda",
 
-      //PRODUCTO SELECCIONADO PARA VISTA DETALLADA
+      // PRODUCTO QUE SE MUESTRA EN DETALLE
       productoSeleccionado: null,
 
-      //aqui se guarda desde el formulario de registrarse
+      // DATOS DEL FORMULARIO DE REGISTRO
       usuarioNuevo: {
         nombre: "",
         id: "",
@@ -19,7 +19,7 @@ const app = Vue.createApp({
         cuenta: "",
       },
 
-      //ERRORES DE VALIDACION DEL FORMULARIO
+      // MENSAJES DE ERROR PARA LOS CAMPOS DEL FORMULARIO
       errores: {
         nombre: "",
         id: "",
@@ -28,13 +28,13 @@ const app = Vue.createApp({
         cuenta: "",
       },
 
-      //usuario ya registrado/logueado
+      // USUARIO ACTUALMENTE LOGUEADO
       usuarioYaRegistrado: null,
 
-      //MODO DE AUTENTICACIÓN (login o registro)
+      // MODO DE AUTENTICACIÓN ACTIVO (LOGIN O REGISTRO)
       modoAutenticacion: "login",
 
-      //DATOS PARA LOGIN
+      // CREDENCIALES PARA INICIAR SESIÓN
       usuarioLogin: {
         id: "",
         email: "",
@@ -42,20 +42,23 @@ const app = Vue.createApp({
     };
   },
 
+  // FUNCIÓN QUE SE EJECUTA AL CARGAR LA APLICACIÓN
   mounted() {
-    //CARGAR PRODUCTOS
+    // TRAER LOS PRODUCTOS DESDE EL SERVIDOR
     this.cargarProductos();
 
-    //RECUPERAR CARRITO SI EXISTE
+    // RECUPERAR CARRITO GUARDADO DEL NAVEGADOR
     const carritoGuardado = localStorage.getItem("carritoSoma");
     if (carritoGuardado) {
+      // CONVERTIR EL JSON A OBJETO
       this.carrito = JSON.parse(carritoGuardado);
       console.log("Carrito recuperado:", this.carrito);
     }
 
-    //RECUPERAR USUARIO SI EXISTE
+    // VERIFICAR SI HAY UNA SESIÓN ACTIVA
     const usuarioGuardado = sessionStorage.getItem("usuarioSoma");
     if (usuarioGuardado) {
+      // RESTAURAR DATOS DEL USUARIO
       this.usuarioYaRegistrado = JSON.parse(usuarioGuardado);
       this.vistaActual = "tienda";
 
@@ -63,66 +66,65 @@ const app = Vue.createApp({
     }
   },
 
+  // FUNCIONES DE LA APLICACIÓN
   methods: {
-    //FUNCION PARA CARGAR PRODUCTOS DESDE EL PHP
+    // OBTENER TODOS LOS PRODUCTOS DESDE LA BASE DE DATOS
     cargarProductos() {
       fetch("productos.php")
         .then((res) => res.json())
         .then((data) => {
+          // GUARDAR LOS PRODUCTOS EN EL ESTADO
           this.productos = data;
         })
         .catch((error) => console.error("Error cargando productos:", error));
     },
 
-    //FUNCION PARA AGREGAR PRODUCTOS AL CARRITO
+    // AÑADIR UN PRODUCTO AL CARRITO DE COMPRAS
     agregarAlCarrito(producto) {
-      //VERIFICAR SI EL USUARIO ESTA REGISTRADO
+      // COMPROBAR QUE EL USUARIO ESTÉ REGISTRADO
       if (!this.usuarioYaRegistrado) {
         alert("¡Debes registrarte para añadir productos al carrito!");
         this.vistaActual = "registro";
         return;
       }
 
-      //VERIFICAR DISPONIBILIDAD DEL PRODUCTO
+      // COMPROBAR QUE HAYA STOCK DISPONIBLE
       if (producto.disponibilidad <= 0) {
         alert("Lo sentimos, este producto está agotado");
         return;
       }
 
-      //PUSH PARA AÑADIR EL OBJETO A LA ARRAY DE CARRITO:
+      // AGREGAR PRODUCTO AL CARRITO Y GUARDARLO
       this.carrito.push(producto);
       localStorage.setItem("carritoSoma", JSON.stringify(this.carrito));
       console.log("Carrito actual:", this.carrito);
     },
 
-    //FUNCION PARA MOSTRAR DETALLES DE UN PRODUCTO
-    verDetallesProducto(idProducto) {
-      console.log("Click en producto con ID:", idProducto);
+    // MOSTRAR LA VISTA DETALLADA DE UN PRODUCTO
+    verDetallesProducto(nombreProducto) {
+      console.log("Click en producto:", nombreProducto);
       console.log("Productos disponibles:", this.productos);
 
-      //CONVERTIR A NUMERO POR SI ACASO
-      const idBuscado = Number(idProducto);
-
-      //BUSCAR EL PRODUCTO POR ID EN LA LISTA
-      const producto = this.productos.find((p) => Number(p.id) === idBuscado);
+      // ENCONTRAR EL PRODUCTO EN LA LISTA
+      const producto = this.productos.find((p) => p.nombre === nombreProducto);
 
       console.log("Producto encontrado:", producto);
 
       if (producto) {
-        //GUARDAR PRODUCTO SELECCIONADO
+        // GUARDAR PRODUCTO PARA MOSTRARLO
         this.productoSeleccionado = producto;
-        //CAMBIAR A VISTA DETALLE
+        // IR A LA PÁGINA DE DETALLE
         this.vistaActual = "detalle-producto";
         console.log("Vista cambiada a:", this.vistaActual);
       } else {
-        console.log("No se encontró el producto con ID:", idBuscado);
+        console.log("No se encontró el producto:", nombreProducto);
         alert("Producto no encontrado. Verifica que esté cargado en la base de datos.");
       }
     },
 
-    //FUNCION PARA CONFIRMAR PEDIDO
+    // FINALIZAR LA COMPRA DEL CARRITO
     confirmarPedido() {
-      //VERIFICAR SI EL USUARIO ESTA REGISTRADO
+      // COMPROBAR QUE EL USUARIO ESTÉ REGISTRADO
       if (!this.usuarioYaRegistrado) {
         alert("¡Debes registrarte para realizar una compra!");
         this.vistaActual = "registro";
@@ -133,37 +135,38 @@ const app = Vue.createApp({
         alert("¡Gracias por tu compra! El total es: " + this.totalCarrito + "€");
         this.carrito = [];
         localStorage.removeItem("carritoSoma");
-        this.vistaActual = "tienda"; //volver a la tienda
+        this.vistaActual = "tienda"; // REGRESAR AL INICIO
       }
     },
 
-    //FUNCION PARA ELIMINAR UN PRODUCTO DEL CARRITO
+    // QUITAR UN PRODUCTO DEL CARRITO
     eliminarDelCarrito(index) {
-      //ELIMINAR PRODUCTO POR SU INDICE EN LA ARRAY
+      // BORRAR PRODUCTO POR SU POSICIÓN
       this.carrito.splice(index, 1);
 
-      //ACTUALIZAR LOCALSTORAGE
+      // ACTUALIZAR DATOS GUARDADOS
       localStorage.setItem("carritoSoma", JSON.stringify(this.carrito));
 
       console.log("Producto eliminado. Carrito actual:", this.carrito);
     },
 
-    //FUNCION PARA NAVEGAR
+    // CAMBIAR ENTRE LAS DIFERENTES PÁGINAS
     cambiarVista(nuevaVista) {
       this.vistaActual = nuevaVista;
     },
 
-    //FUNCION PARA VALIDAR CAMPOS EN TIEMPO REAL
+    // VALIDAR LOS CAMPOS DEL FORMULARIO MIENTRAS SE ESCRIBE
     validarCampo(campo) {
-      //REGEXS
+      // EXPRESIONES REGULARES PARA CADA CAMPO
       const regexNombre = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]{3,50}$/;
       const regexID = /^\d{5}$/;
       const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       const regexTel = /^[679]\d{8}$/;
       const regexCuenta = /^ES\d{22}$/;
 
-      //VALIDAR SEGUN EL CAMPO
+      // APLICAR VALIDACIÓN SEGÚN EL CAMPO
       switch (campo) {
+        // VALIDAR NOMBRE: MÍNIMO 3 CARACTERES, SOLO LETRAS
         case "nombre":
           if (!this.usuarioNuevo.nombre) {
             this.errores.nombre = "";
@@ -174,6 +177,7 @@ const app = Vue.createApp({
           }
           break;
 
+        // VALIDAR ID: EXACTAMENTE 5 NÚMEROS
         case "id":
           if (!this.usuarioNuevo.id) {
             this.errores.id = "";
@@ -184,6 +188,7 @@ const app = Vue.createApp({
           }
           break;
 
+        // VALIDAR EMAIL: FORMATO CORRECTO
         case "email":
           if (!this.usuarioNuevo.email) {
             this.errores.email = "";
@@ -194,6 +199,7 @@ const app = Vue.createApp({
           }
           break;
 
+        // VALIDAR TELÉFONO: 9 DÍGITOS, EMPEZANDO POR 6, 7 O 9
         case "telefono":
           if (!this.usuarioNuevo.telefono) {
             this.errores.telefono = "";
@@ -204,6 +210,7 @@ const app = Vue.createApp({
           }
           break;
 
+        // VALIDAR CUENTA BANCARIA: FORMATO IBAN ESPAÑOL
         case "cuenta":
           if (!this.usuarioNuevo.cuenta) {
             this.errores.cuenta = "";
@@ -216,14 +223,14 @@ const app = Vue.createApp({
       }
     },
 
-    //FUNCION PARA INICIAR SESION
+    // AUTENTICAR UN USUARIO EXISTENTE
     iniciarSesion() {
       if (!this.usuarioLogin.id || !this.usuarioLogin.email) {
         alert("Por favor, completa todos los campos");
         return;
       }
 
-      //ENVIAR AL PHP PARA VERIFICAR
+      // ENVIAR CREDENCIALES AL SERVIDOR PARA VERIFICAR
       fetch("usuarios.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -238,50 +245,53 @@ const app = Vue.createApp({
           if (data.mensaje === "exito") {
             alert("¡Bienvenido de nuevo!");
 
-            //GUARDAR USUARIO EN SESSIONSTORAGE
+            // GUARDAR DATOS DEL USUARIO EN EL NAVEGADOR
             sessionStorage.setItem("usuarioSoma", JSON.stringify(data.usuario));
 
-            //ASIGNAR DATOS A USUARIO LOGUEADO
+            // ESTABLECER USUARIO COMO LOGUEADO
             this.usuarioYaRegistrado = data.usuario;
 
-            //LIMPIAR FORMULARIO
+            // LIMPIAR CAMPOS DEL FORMULARIO
             this.usuarioLogin = { id: "", email: "" };
 
-            //VOLVER A LA TIENDA
+            // REGRESAR A LA TIENDA
             this.vistaActual = "tienda";
           } else {
             alert("Usuario no encontrado o datos incorrectos");
           }
         })
         .catch((error) => {
+          // MOSTRAR ERROR SI FALLA LA CONEXIÓN
           console.error("Error al iniciar sesión:", error);
           alert("Error al iniciar sesión");
         });
     },
 
     validarRegistro() {
-      //VALIDAR TODOS LOS CAMPOS
+      // REVISAR TODOS LOS CAMPOS
       this.validarCampo("nombre");
       this.validarCampo("id");
       this.validarCampo("email");
       this.validarCampo("telefono");
       this.validarCampo("cuenta");
 
-      //VERIFICAR SI HAY ERRORES
+      // VER SI HAY ERRORES O CAMPOS VACÍOS
       const hayErrores = Object.values(this.errores).some((error) => error !== "");
       const camposVacios = Object.values(this.usuarioNuevo).some((valor) => valor === "");
 
+      // VERIFICAR QUE TODOS LOS CAMPOS ESTÉN LLENOS
       if (camposVacios) {
         alert("Por favor, completa todos los campos");
         return;
       }
 
+      // VERIFICAR QUE NO HAYA ERRORES DE VALIDACIÓN
       if (hayErrores) {
         alert("Por favor, corrige los errores en el formulario");
         return;
       }
 
-      //SI LAS VALIDACIONES PASAN, ENVIAMOS AL PHP
+      // ENVIAR LOS DATOS AL SERVIDOR PARA REGISTRAR
       fetch("usuarios.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -292,15 +302,16 @@ const app = Vue.createApp({
       })
         .then((res) => res.json())
         .then((data) => {
+          // CONFIRMACIÓN DE REGISTRO EXITOSO
           alert("¡Registro completado y guardado en la base de datos!");
 
-          //GUARDAR EN SESSIONSTORAGE Y LOGUEAR AL USUARIO
+          // GUARDAR USUARIO Y AUTENTICARLO AUTOMÁTICAMENTE
           sessionStorage.setItem("usuarioSoma", JSON.stringify(this.usuarioNuevo));
 
-          //COPIAR DATOS A USUARIO LOGUEADO
+          // ESTABLECER COMO USUARIO LOGUEADO
           this.usuarioYaRegistrado = { ...this.usuarioNuevo };
 
-          //LIMPIAR FORMULARIO
+          // RESETEAR EL FORMULARIO
           this.usuarioNuevo = {
             nombre: "",
             id: "",
@@ -309,7 +320,7 @@ const app = Vue.createApp({
             cuenta: "",
           };
 
-          //LIMPIAR ERRORES
+          // RESETEAR MENSAJES DE ERROR
           this.errores = {
             nombre: "",
             id: "",
@@ -321,17 +332,18 @@ const app = Vue.createApp({
           this.vistaActual = "tienda";
         })
         .catch((error) => {
+          // MOSTRAR ERROR SI FALLA EL REGISTRO
           console.error("Error al registrar:", error);
           alert("Hubo un error al conectar con el servidor.");
         });
     },
 
-    //FUNCION PARA CERRAR SESION
+    // DESCONECTAR AL USUARIO Y LIMPIAR DATOS
     cerrarSesion() {
       this.usuarioYaRegistrado = null;
       sessionStorage.removeItem("usuarioSoma");
 
-      //LIMPIAR CARRITO AL CERRAR SESIÓN
+      // VACIAR CARRITO AL SALIR
       this.carrito = [];
       localStorage.removeItem("carritoSoma");
 
@@ -339,21 +351,22 @@ const app = Vue.createApp({
       alert("Sesión cerrada");
     },
   },
-  //PARA CALCULAR AUTOMATICAMENTE CADA VEZ QUE EL CARRITO CAMBIE
+  // PROPIEDADES CALCULADAS AUTOMÁTICAMENTE
   computed: {
+    // CALCULAR EL TOTAL DEL CARRITO
     totalCarrito() {
       let total = 0;
 
-      //sumar el precio de cada producto que este en el carrito
+      // SUMAR EL PRECIO DE TODOS LOS PRODUCTOS DEL CARRITO
       for (let i = 0; i < this.carrito.length; i++) {
         total += parseFloat(this.carrito[i].precio);
       }
-      return total.toFixed(2); //DOS DECIMALES
+      return total.toFixed(2); // DOS DECIMALES
     },
   },
 });
 
-//COMPONENTE (FOOTER)
+// COMPONENTE DEL PIE DE PÁGINA
 app.component("footer-soma", {
   template: `
     <footer class="soma-footer">
@@ -363,10 +376,12 @@ app.component("footer-soma", {
   `,
 });
 
+// INICIAR LA APLICACIÓN VUE
 app.mount("#app");
 
-//IDIOMAS ESPAÑOL E INGLES
+// TRADUCCIONES DE LA WEB (ESPAÑOL E INGLÉS)
 const traducciones = {
+  // TEXTOS EN ESPAÑOL
   es: {
     "menu-inicio": "Inicio",
     "menu-productos": "Productos",
@@ -405,6 +420,7 @@ const traducciones = {
     "valor3-titulo": "Confianza Total",
     "valor3-texto": "Tu aliado de confianza en el camino hacia tu mejor versión personal",
   },
+  // TEXTOS EN INGLÉS
   en: {
     "menu-inicio": "Home",
     "menu-productos": "Products",
@@ -445,34 +461,36 @@ const traducciones = {
   },
 };
 
-//IDIOMA ACTUAL GUARDADO EN LOCALSTORAGE
+// IDIOMA GUARDADO EN EL NAVEGADOR
 let idiomaActual = localStorage.getItem("idiomaSoma") || "es";
 
-//FUNCIÓN PARA CAMBIAR IDIOMA
+// ALTERNAR ENTRE ESPAÑOL E INGLÉS
 function cambiarIdioma() {
-  //ALTERNAR ENTRE ES Y EN
+  // CAMBIAR DE UN IDIOMA AL OTRO
   idiomaActual = idiomaActual === "es" ? "en" : "es";
 
-  //GUARDAR PREFERENCIA
+  // GUARDAR SELECCIÓN DEL USUARIO
   localStorage.setItem("idiomaSoma", idiomaActual);
 
-  //APLICAR TRADUCCIONES
+  // ACTUALIZAR TEXTOS DE LA PÁGINA
   aplicarTraducciones();
 }
 
-//FUNCIÓN PARA APLICAR LAS TRADUCCIONES AL DOM
+// CAMBIAR LOS TEXTOS AL IDIOMA SELECCIONADO
 function aplicarTraducciones() {
+  // OBTENER TODOS LOS ELEMENTOS CON TRADUCCIÓN
   const elementos = document.querySelectorAll("[data-traduccion]");
 
   elementos.forEach((elemento) => {
     const clave = elemento.getAttribute("data-traduccion");
+    // REEMPLAZAR TEXTO SI EXISTE LA TRADUCCIÓN
     if (traducciones[idiomaActual][clave]) {
       elemento.textContent = traducciones[idiomaActual][clave];
     }
   });
 }
 
-//APLICAR IDIOMA AL CARGAR LA PÁGINA
+// ESTABLECER IDIOMA CUANDO CARGA LA PÁGINA
 window.addEventListener("DOMContentLoaded", () => {
   aplicarTraducciones();
 });
